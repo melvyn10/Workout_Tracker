@@ -35,11 +35,11 @@ Workout Tracker application URL: https://obscure-hollows-48440.herokuapp.com/
 
 
 
-![Alt Text](https://github.com/melvyn10/burger/blob/main/public/image/Tracker1.gif)
+![Alt Text](https://github.com/melvyn10/Workout_Tracker/tree/main/public/Image/Tracker1.gif)
 
-![Alt Text](https://github.com/melvyn10/burger/blob/main/public/image/Tracker2.gif)
+![Alt Text](https://github.com/melvyn10/Workout_Tracker/tree/main/public/Image/Tracker2.gif)
 
-![Alt Text](https://github.com/melvyn10/burger/blob/main/public/image/Tracker3.gif)
+![Alt Text](https://github.com/melvyn10/Workout_Tracker/tree/main/public/Image/Tracker3.gif)
 
 
 
