@@ -26,11 +26,17 @@ const WorkoutSchema = new Schema({
         reps: Number, 
         distance: Number
       }
-    ]
+    ],
+
+    totalDuration: {
+        type: Number,
+        default: 0
+    }
 }
 //    { toJASON: { virtuals: true,},}
 );
 
+/*
 WorkoutSchema.virtual("totalDuration"). 
     get(function() {
         const duration = this.exercises.reduce((total, current) =>
@@ -38,6 +44,12 @@ WorkoutSchema.virtual("totalDuration").
         console.log ("total duration ", duration);
         return duration;
     });
+*/
+WorkoutSchema.methods.calDuration = function () {
+    this.totalDuration = this.exercises.reduce( function(a, b) {
+        return a + b.duration;}, 0);
+     return this.totalDuration;
+};
 
 const Workout = mongoose.model("Workout", WorkoutSchema);
 

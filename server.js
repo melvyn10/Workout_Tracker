@@ -5,7 +5,7 @@ const path = require("path");
 
 const PORT = process.env.PORT || 3000;
 
-const db = require("./models");
+const Workout = require("./models/Workout.js");
 
 const app = express();
 
@@ -21,10 +21,12 @@ mongoose.connect(process.env.MONGODB_URI || "mongodb://localhost/workout", { use
 // Route to post form submission to mongoDB via mongoose
 app.post("/api/workouts", ({body}, res) => {
     // Create a exercise
-    console.log("create new exercise body: ", body);
-    db.Workout.create ({})
+    const workout = new Workout(body);
+    console.log("new workout",workout);
+    workout.calDuration();
+    Workout.create ({workout})
         .then(dbWorkout => {
-            console.log("dbWorkout",dbWorkout); 
+            console.log("create dbWorkout",dbWorkout);
             res.json(dbWorkout);
         })
         .catch(err => {
@@ -36,26 +38,29 @@ app.post("/api/workouts", ({body}, res) => {
 app.put("/api/workouts/:id", ({params, body}, res) => {
     console.log("new exercise params: ",params.id);
     console.log("new exercise body: ", body);
-    db.Workout.findOneAndUpdate(
+    Workout.findOneAndUpdate(
         { _id: params.id},
         { $push: {exercises: body}},
         { new: true}
     )
     .then(dbWorkout => {
-            console.log("Workout ",dbWorkout);
-            res.json(dbWorkout);
-        })
+        console.log("add exercise to Workout ",dbWorkout);
+        dbWorkout.calDuration();
+        console.log("tot duration after ", dbWorkout.totalDuration);
+        res.json(dbWorkout);
+    })
     .catch(err => {
-            console.log("err ", err);
-            res.json(err);
-        });
+        console.log("err ", err);
+        res.json(err);
+    });
     });
 
 app.get("/api/workouts", (req, res) => {
     console.log("find workout ");
-    db.Workout.find({})
+    Workout.find({})
     .then(dbWorkout => {
-        console.log("dbWorkout ", dbWorkout);
+        console.log("found dbWorkout ", dbWorkout);
+        console.log("found total duration ", dbWorkout.totalDuration);
         res.json(dbWorkout);
     })
     .catch(err => {
@@ -66,7 +71,7 @@ app.get("/api/workouts", (req, res) => {
 
 // Route for dashboard page
 app.get("/api/workouts/range", (req, res) => {
-    db.Workout.find({})
+    Workout.find({})
       .limit(7)
       .then((dbWorkout) => {
         console.log("plot dbWorkout ", dbWorkout);
